@@ -1,0 +1,11 @@
+==========================
+Wikipedia Template Counter
+==========================
+
+A quick script that counts the number of times a set of templates appears,
+and outputs that data into a wikitext table. Uses pywikipediabot.
+
+NOTE: Must have pywikipediabot installed and set up to use
+(see here: https://www.mediawiki.org/wiki/Manual:Pywikipediabot/Overview).
+Otherwise, we can't use (unless I'm unaware of other tools) the Wikipedia API
+to retreive template usage data.
