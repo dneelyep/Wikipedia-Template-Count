@@ -1,0 +1,126 @@
+#!/bin/bash
+# -*- coding: utf-8  -*-
+# Goal: Automatically produce some very rough statistics on group membership in WikiProject Music.
+#       Stats created by counting the amount of times a given template has been "transcluded" per each WikiProject.
+#       I get this number by a:
+#               python templatecount.py -count <template_name_here>
+#
+# I think it's very inaccurate, neat though.
+
+# TODO: All the user boxes in sub-directories are not working.
+# TODO: Add helpful comments to make the scripts more maintainable.
+# # Another idea: Have monthly/etc statistics to see how these numbers change over time.
+
+# ===== First, gather all the data. =====
+
+# This is an array consisting of all the templates we want to count.
+# Since we have a lot of separate names to count, it's easier to store them in an array
+# and iterate through that array to do operations (for example, get the count of the template).
+#
+# If you want to add a new template to the list here, just insert it into the array below.
+# Make sure to maintain alphabetical order if possible.
+# TODO: Need to login probably.
+rm raw_data.txt
+
+template_names=( User_WikiProject_Albums
+                 User_WikiProject_Alternative_Music
+		 User_AUSMUS WikiProject_Beyoncé_Knowles/Userbox
+		 User_WikiProject_Björk
+		 User_WP_Dylan WikiProject_Britney_Spears/Userbox 
+		 User_WikiProject_Music_of_Canada 
+		 User_Christianmusic 
+		 User_WPClassical 
+		 User_WikiProject_Country_Music 
+		 User:Screpia/country_music 
+		 User_Discog_WP 
+		 User_WikiProject_Eurovision 
+		 User_G%26S 
+		 User_WPGUITAR 
+		 User_hip_hop_wikiproject 
+		 User_WikiProject_Irish_music 
+		 User_WikiProject_Jazz
+		 WikiProject_Kylie_Minogue/Userbox/Aphrodite
+		 WikiProject_Kylie_Minogue/Userbox/X
+		 WikiProject_Kylie_Minogue/Userbox/Ultimate_Kylie
+		 WikiProject_Kylie_Minogue/Userbox/Light_Years
+		 WikiProject_Lady_Gaga/Userbox
+		 WikiProject_Madonna/Userbox
+		 WikiProject_Mariah_Carey/Userbox 
+		 User_WikiProject_Metal
+		 WikiProject_Michael_Jackson/Userbox 
+		 User_WP_Music 
+		 User_WikiProject_Music_genres 
+		 User_WPMusInst WikiProject_Musical_Theatre/Userbox/member 
+		 User_WP_Musicians  
+		 User_WP_Musicians2 
+		 User_ParticipantOpera2 
+		 User_ParticipantOpera3 
+		 User_ParticipantOpera4 
+		 User_ParticipantOpera5 
+		 User_WPPROG 
+		 User_WikiProject_Punk_music 
+		 User_R%26B_and_Soul_Music_wikiproject 
+		 User_Wikiproject_Record_Charts 
+		 User_Wikiproject_Rock_music
+		 WikiProject_Rolling_Stones_userbox 
+		 User_Roots_music_project 
+		 User_WikiProject_Songs
+		 User_WikiProject_The_Beatles
+		 User_WikiProject_The_Beatles_2
+		 User_WPClash
+		 WikiProject_The_Supremes/Userbox
+		 User_WikiProject_U2 )
+
+# And run the templatecount.py script on each item in the array. ${template_names[@]} evaluates as
+# the contents of the array, which get passed in as arguments to templatecount.py.
+# TODO: This loop works, but keeps the multiple todos. But, the final total isn't calculated.
+#for element in ${template_names[@]}
+#do
+/usr/bin/python2 ~/Programming/pywikipedia/templatecount.py -count ${template_names[@]} >> raw_data.txt
+#done
+#../../Python27/python.exe
+
+# Projects without a known template:
+# Composers: ?
+# Elvis Presley: ?
+# Miles Davis: N/A
+# get_count N/A
+# Music theory: ?
+# Richard Wagner:  ? 
+# Santana: ?
+
+
+# ===== Then, process all the data into some nice output. =====
+# Save the output in intermediate files.
+# TODO: Look into using -n to stop getting stdout.
+# TODO: Fix screwed up unicode characters
+
+sed 's/Number of transclusions per template//' < raw_data.txt > int1.txt
+sed 's/------------------------------------//' < int1.txt > int2.txt
+sed 's/^Report generated on .*$//' < int2.txt > int3.txt
+sed '/^$/d' < int3.txt > int4.txt # 'Delete' required to get rid of newlines.
+
+# Now, make a new file that stores the stuff in wikitext.
+echo -e '{| class="wikitable sortable"\n|-\n! Template name !! Number of times used\n|-' > int5.txt
+
+# Take the data from final_output.txt and write into tables like so
+# Data should be appended to the file.
+# TODO: Should int5 be appended to or written to?
+sed 's/: */ || /' <int4.txt >>int5.txt # Exchange :s for ||s.
+sed 's/^.*||/|&/' <int5.txt >int6.txt  # Add a | at the beginning of each line.
+sed 's/||.*$/&\n|-/' <int6.txt >formatted_data.txt # Add a newline and the |- symbol after each table entry.
+
+sed "s/|TOTAL/|'''Total'''/g" <formatted_data.txt >tmp.txt
+mv tmp.txt formatted_data.txt
+
+# TODO: Command line argument approach works but elements come out in non-alphabetical order.
+#       However, the data is requested in alhpabetical order - see output text.
+echo -e '|}' >> formatted_data.txt
+
+# Clean up intermediate files that aren't needed anymore.
+rm int1.txt int2.txt int3.txt int4.txt int5.txt int6.txt
+
+echo "\n\nScript completed. View ouput in the file formatted_data.txt."
+# NOTE: If ya want to see the raw output of the data gathered, remove raw_data.txt from the above list and run the script..
+
+# TODO: Just pass data back and forth between two files rather than create tons?
