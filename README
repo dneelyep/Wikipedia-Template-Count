@@ -8,7 +8,16 @@ and outputs that data into a wikitext table. Uses pywikipediabot.
 The current script contains the templates related to WikiProject Music, but
 these templates can be replaced with others depending on your needs.
 
-NOTE: Must have pywikipediabot installed and set up to use
+=======
+Purpose
+=======
+The original goal was to create a script that generated a table similar to the one
+at https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Music/Statistics automatically.
+
+====
+NOTE
+====
+Must have pywikipediabot installed and set up to use
 (see here: https://www.mediawiki.org/wiki/Manual:Pywikipediabot/Overview).
 Otherwise, we can't use (unless I'm unaware of other tools) the Wikipedia API
 to retreive template usage data.
