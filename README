@@ -1,9 +1,8 @@
 ==========================
 Wikipedia Template Counter
 ==========================
-
-A quick script that counts the number of times a set of templates appears,
-and outputs that data into a wikitext table. Uses pywikipediabot.
+A quick script that counts the number of times a set of templates appears
+on Wikipedia, and outputs that data into a wikitext table. Uses pywikipediabot.
 
 The current script contains the templates related to WikiProject Music, but
 these templates can be replaced with others depending on your needs.
