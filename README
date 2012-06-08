@@ -13,10 +13,21 @@ Purpose
 The original goal was to create a script that generated a table similar to the one
 at https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Music/Statistics automatically.
 
-====
-NOTE
-====
-Must have pywikipediabot installed and set up to use
+=====
+Usage
+=====
+First, note that you must have pywikipediabot installed and set up to use this script
 (see here: https://www.mediawiki.org/wiki/Manual:Pywikipediabot/Overview).
 Otherwise, we can't use (unless I'm unaware of other tools) the Wikipedia API
 to retreive template usage data.
+
+To generate the data, after you're logged in via pywikipediabot, run user_template_count
+from the command line, while in this directory.
+
+Your formatted table should appear in formatted_data.txt. From there, just paste the
+table into a MediaWiki page and it should work.
+
+If you want to generate data for a specific set of templates, edit the template_names
+array in user_template_count and run the script.
+
+raw_data.txt is used for receiving the data from the API.
